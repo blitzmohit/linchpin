@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../../Downloads/ic_play_arrow_24px.svg</file>
+        <file>../../Downloads/ic_loop_24px.svg</file>
+        <file>../../Downloads/ic_replay_24px.svg</file>
+        <file>../../Downloads/ic_restore_24px.svg</file>
+    </qresource>
+</RCC>
