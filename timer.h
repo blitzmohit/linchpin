@@ -10,7 +10,6 @@ public:
     explicit Timer(QObject *parent = 0): QObject(parent) {}
 public slots:
     void start() {
-        qCritical()<<"timer started";
         time.start();
     }
     void stop() {

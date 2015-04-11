@@ -17,8 +17,9 @@ public:
 
 
 public slots:
-    void updatedval();
+    void startTime();
     void singleFired();
+    void showTime();
 //    void repeat();
 
 private:

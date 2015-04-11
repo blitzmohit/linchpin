@@ -12,24 +12,28 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     Timer *timekeeper= new Timer();
-    connect(ui->pushButtonStart,SIGNAL(clicked()),this,SLOT(updatedval()));
-    connect(ui->pushButtonStart,SIGNAL(clicked()),timekeeper,SLOT(start()));
-}
+    connect(ui->pushButtonStart,SIGNAL(clicked()),this,SLOT(startTime()));
+//    connect(ui->pushButtonStart,SIGNAL(clicked()),timekeeper,SLOT(start()));
+
+   }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
-void MainWindow::updatedval()
+void MainWindow::startTime()
 {
     qCritical()<<"updated val called";
     ui->pushButtonStart->setEnabled(false);
-//    ui->labelTime->setText(QTime::currentTime().toString());
-    QTime t = QTime::currentTime();
-    int mintonextHour=60-t.toString("m").toInt();
-    QTimer::singleShot(mintonextHour*60000,this,SLOT(singleFired()));
-
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(showTime()));
+    timer->start(1000);
+    QTime *t = new QTime(0,25,0);
+    ui->labelTime->setText(t->toString("mm:ss"));
+    /*        QTime currTime=QTime::currentTime();
+            int mintonextHour=60-currTime.toString("m").toInt();
+            QTimer::singleShot(mintonextHour*60000,this,SLOT(singleFired()));*/
 }
 
 
@@ -40,9 +44,6 @@ void MainWindow::singleFired()
     QVector<QVoice> availVoice=qts->availableVoices();
     qts->setVoice(availVoice.at(1));
     qts->say("It is "+QTime::currentTime().toString("HA"));
-//Speak the system time
-//QTextToSpeech qts=new QTextToSpeech();
-//qts.say("hello");
 
 
 // so now the time should be HH:00 now we have to schedule it every hour
@@ -50,4 +51,14 @@ void MainWindow::singleFired()
    QTimer *qt = new QTimer(this);
    connect(qt, SIGNAL(timeout()), this, SLOT(singleFired()));
    qt->start(60*60000);
+}
+
+void MainWindow::showTime()
+{
+
+    QTime currLabel = QTime::fromString(ui->labelTime->text(),"mm:ss");
+//    qCritical()<<currLabel.toString("mm:ss");
+    currLabel=currLabel.addSecs(-1);
+//    qCritical()<<currLabel.toString("mm:ss");
+    ui->labelTime->setText(currLabel.toString("mm:ss"));
 }
